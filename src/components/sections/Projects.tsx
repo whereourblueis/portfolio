@@ -70,27 +70,6 @@ function ProjectCard({ project, index, featured = false }: ProjectCardProps) {
         {/* Links */}
         <div className="flex gap-4">
           <Link
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-secondary hover:text-white transition-colors group/link"
-          >
-            <svg
-              className="w-4 h-4 group-hover/link:scale-110 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-            Live Demo
-          </Link>
-          <Link
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"

@@ -7,16 +7,16 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function Blog() {
   return (
-    <section id="blog" className="section-padding relative">
+    <section id="notion" className="section-padding relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <ScrollReveal>
           <div className="text-center mb-16">
             <span className="text-primary font-medium mb-4 block">
-              My Blog
+              My Notion
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-              <span className="gradient-text">블로그</span>
+              <span className="gradient-text">노션</span>
             </h2>
             <p className="text-secondary max-w-2xl mx-auto text-lg">
               개발하면서 배운 것들을 기록합니다
@@ -61,12 +61,9 @@ export default function Blog() {
 
               {/* Post Content */}
               <div className="p-6">
-                {/* Date */}
-                <time className="text-sm text-secondary">{post.date}</time>
-
                 {/* Title */}
                 <h3 className="text-lg font-bold mt-2 mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                  <Link href={post.url}>{post.title}</Link>
+                  <Link href={post.url} target="_blank" rel="noopener noreferrer">{post.title}</Link>
                 </h3>
 
                 {/* Excerpt */}
@@ -89,6 +86,8 @@ export default function Blog() {
                 {/* Read More Link */}
                 <Link
                   href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-accent transition-colors group/link"
                 >
                   자세히 읽기
@@ -110,31 +109,6 @@ export default function Blog() {
             </motion.article>
           ))}
         </div>
-
-        {/* View All Posts Button */}
-        <ScrollReveal>
-          <div className="text-center mt-12">
-            <Link
-              href="/blog"
-              className="group inline-flex items-center gap-2 px-8 py-4 glass-card rounded-full font-semibold hover:bg-white/10 transition-all"
-            >
-              모든 글 보기
-              <svg
-                className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
-            </Link>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );
