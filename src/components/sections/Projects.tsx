@@ -1,149 +1,360 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "@/data/portfolio";
-import ScrollReveal from "@/components/ui/ScrollReveal";
 
-interface ProjectCardProps {
-  project: (typeof projects)[0];
-  index: number;
-  featured?: boolean;
+function getTechIconUrl(tech: string): string {
+  const techMap: Record<string, string> = {
+    react: "react/react-original",
+    "React": "react/react-original",
+    javascript: "javascript/javascript-original",
+    "JavaScript": "javascript/javascript-original",
+    typescript: "typescript/typescript-original",
+    "TypeScript": "typescript/typescript-original",
+    python: "python/python-original",
+    "Python": "python/python-original",
+    springboot: "spring/spring-original",
+    "SpringBoot": "spring/spring-original",
+    "Spring Boot": "spring/spring-original",
+    java: "java/java-original",
+    "Java": "java/java-original",
+    nextjs: "nextjs/nextjs-original",
+    "Next.js": "nextjs/nextjs-original",
+    nodejs: "nodejs/nodejs-original",
+    "Node.js": "nodejs/nodejs-original",
+    tailwindcss: "tailwindcss/tailwindcss-original",
+    "Tailwind CSS": "tailwindcss/tailwindcss-original",
+    mysql: "mysql/mysql-original",
+    "MySQL": "mysql/mysql-original",
+    postgresql: "postgresql/postgresql-original",
+    "PostgreSQL": "postgresql/postgresql-original",
+    "Vite": "vitejs/vitejs-original",
+    "Axios": "axios/axios-plain",
+  };
+
+  const iconPath = techMap[tech];
+  if (iconPath) {
+    return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${iconPath}.svg`;
+  }
+  return "";
 }
 
-function ProjectCard({ project, index, featured = false }: ProjectCardProps) {
+interface ProjectDetail {
+  title: string;
+  items: string[];
+}
+
+interface Project {
+  id: number;
+  title: string;
+  subtitle?: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  techStack?: {
+    Frontend?: string[];
+    Backend?: string[];
+    AI?: string[];
+  };
+  team?: string;
+  period?: string;
+  githubUrl: string;
+  featured: boolean;
+  details?: ProjectDetail[];
+}
+
+interface ProjectCardProps {
+  project: Project;
+  onClick: () => void;
+}
+
+function ProjectCard({ project, onClick }: ProjectCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -10 }}
-      className={`glass-card overflow-hidden group ${
-        featured ? "lg:col-span-1" : ""
-      }`}
+      onClick={onClick}
+      className="group h-full flex flex-col p-5 bg-card-bg/80 backdrop-blur-sm border border-card-border rounded-xl cursor-pointer"
+      whileHover={{
+        y: -4,
+        boxShadow: "0 10px 40px -10px rgba(139, 92, 246, 0.3)",
+        borderColor: "rgba(139, 92, 246, 0.4)",
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      {/* Project Image/Gradient */}
-      <div className="relative h-48 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-accent/40 to-accent-pink/40" />
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <span className="text-6xl font-bold text-white/20">
-            {project.title.charAt(0)}
-          </span>
-        </motion.div>
-        {/* Overlay on hover */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        />
-      </div>
+      <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+        {project.title}
+      </h3>
+      {project.subtitle && (
+        <p className="text-xs text-accent mb-2">{project.subtitle}</p>
+      )}
+      <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-2 flex-grow">
+        {project.description}
+      </p>
 
-      {/* Project Info */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-secondary text-sm mb-4 line-clamp-2">
-          {project.description}
-        </p>
-
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.technologies.slice(0, 4).map((tech) => (
-            <span
+      <div className="flex flex-wrap items-center gap-3 mt-auto">
+        {project.technologies.map((tech) => {
+          const iconUrl = getTechIconUrl(tech);
+          return iconUrl ? (
+            <div
               key={tech}
-              className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full border border-primary/20"
+              className="w-6 h-6 relative"
+              title={tech}
             >
-              {tech}
-            </span>
-          ))}
-          {project.technologies.length > 4 && (
-            <span className="px-3 py-1 text-xs font-medium text-secondary">
-              +{project.technologies.length - 4}
-            </span>
-          )}
-        </div>
-
-        {/* Links */}
-        <div className="flex gap-4">
-          <Link
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-secondary hover:text-white transition-colors group/link"
-          >
-            <svg
-              className="w-4 h-4 group-hover/link:scale-110 transition-transform"
-              fill="currentColor"
-              viewBox="0 0 24 24"
+              <Image
+                src={iconUrl}
+                alt={tech}
+                fill
+                className="object-contain"
+              />
+            </div>
+          ) : (
+            <div
+              key={tech}
+              className="flex items-center px-2.5 py-1 bg-accent/10 rounded-full"
+              title={tech}
             >
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-            GitHub
-          </Link>
-        </div>
+              <span className="text-xs text-accent">{tech}</span>
+            </div>
+          );
+        })}
       </div>
     </motion.div>
   );
 }
 
+interface ProjectModalProps {
+  project: Project;
+  onClose: () => void;
+}
+
+function ProjectModal({ project, onClose }: ProjectModalProps) {
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          initial={{ opacity: 0, scale: 0.9, y: 40 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 40 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        >
+          {/* 헤더 */}
+          <div className="relative p-8 border-b border-gray-100">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-3xl font-bold text-gray-900 mb-2">{project.title}</h3>
+            {project.subtitle && (
+              <p className="text-gray-600 text-lg">{project.subtitle}</p>
+            )}
+            {/* 메타 정보 */}
+            <div className="flex flex-wrap gap-6 mt-4 text-sm">
+              {project.team && (
+                <div>
+                  <span className="text-gray-400">참여인원</span>
+                  <span className="ml-2 font-medium text-gray-900">{project.team}</span>
+                </div>
+              )}
+              {project.period && (
+                <div>
+                  <span className="text-gray-400">기간</span>
+                  <span className="ml-2 font-medium text-gray-900">{project.period}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 본문 */}
+          <div className="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
+            {/* 프로젝트 설명 카드 */}
+            <motion.div
+              className="p-4 bg-indigo-50 rounded-2xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">프로젝트 설명</h4>
+              <p className="text-gray-900 leading-relaxed">{project.description}</p>
+            </motion.div>
+
+            {/* 기술 스택 카드 */}
+            {project.techStack && (
+              <motion.div
+                className="p-4 bg-blue-50 rounded-2xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">기술 스택</h4>
+                <div className="space-y-3">
+                  {Object.entries(project.techStack).map(([category, techs]) => (
+                    <div key={category} className="flex items-start gap-3">
+                      <span className="text-sm font-bold text-gray-700 min-w-[70px] py-1.5">{category}</span>
+                      <div className="flex flex-wrap gap-2">
+                        {techs.map((tech) => {
+                          const iconUrl = getTechIconUrl(tech);
+                          return (
+                            <motion.div
+                              key={tech}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-violet-100 rounded-full shadow-sm hover:shadow-md hover:border-violet-200 transition-all"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              {iconUrl && (
+                                <div className="w-4 h-4 relative">
+                                  <Image
+                                    src={iconUrl}
+                                    alt={tech}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              )}
+                              <span className="text-xs font-medium text-gray-900">{tech}</span>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* 기존 기술 스택 (techStack 없을 때) */}
+            {!project.techStack && (
+              <motion.div
+                className="p-4 bg-blue-50 rounded-2xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">사용 기술</h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => {
+                    const iconUrl = getTechIconUrl(tech);
+                    return (
+                      <motion.div
+                        key={tech}
+                        className="flex items-center gap-2 px-3 py-2 bg-white border border-violet-100 rounded-full shadow-sm hover:shadow-md transition-all"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {iconUrl && (
+                          <div className="w-5 h-5 relative">
+                            <Image
+                              src={iconUrl}
+                              alt={tech}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                        )}
+                        <span className="text-sm font-medium text-gray-900">{tech}</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
+            {/* 주요 역할 */}
+            {project.details && project.details.length > 0 && (
+              <motion.div
+                className="p-4 bg-violet-50 rounded-2xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">주요 역할</h4>
+                <div className="space-y-5">
+                  {project.details.map((detail, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.25 + idx * 0.1 }}
+                    >
+                      <h5 className="font-semibold text-gray-900 mb-2">{detail.title}</h5>
+                      <ul className="space-y-1.5 ml-1">
+                        {detail.items.map((item, i) => (
+                          <li key={i} className="text-sm text-gray-900 flex items-start gap-2">
+                            <span className="text-gray-400 mt-0.5">·</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* GitHub 링크 */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-full hover:from-gray-700 hover:to-gray-800 transition-all shadow-lg hover:shadow-xl"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                GitHub
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export default function Projects() {
-  const featuredProjects = projects.filter((p) => p.featured);
-  const otherProjects = projects.filter((p) => !p.featured);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="section-padding relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <span className="text-primary font-medium mb-4 block">
-              My Work
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-              <span className="gradient-text">프로젝트</span>
-            </h2>
-            <p className="text-secondary max-w-2xl mx-auto text-lg">
-              직접 기획하고 개발한 프로젝트들입니다
-            </p>
-          </div>
-        </ScrollReveal>
+    <section id="projects" className="py-24">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12">
+        <p className="text-sm text-foreground font-bold tracking-widest uppercase mb-4">Projects</p>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-12">
+          프로젝트
+        </h2>
 
-        {/* Featured Projects */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {featuredProjects.map((project, index) => (
+        <div className="grid md:grid-cols-2 gap-6">
+          {projects.map((project) => (
             <ProjectCard
               key={project.id}
-              project={project}
-              index={index}
-              featured
+              project={project as Project}
+              onClick={() => setSelectedProject(project as Project)}
             />
           ))}
         </div>
-
-        {/* Other Projects */}
-        {otherProjects.length > 0 && (
-          <ScrollReveal>
-            <h3 className="text-xl font-semibold mb-8 flex items-center gap-3">
-              <span className="w-2 h-2 bg-accent rounded-full" />
-              Other Projects
-              <div className="flex-1 h-px bg-accent/20" />
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                />
-              ))}
-            </div>
-          </ScrollReveal>
-        )}
       </div>
+
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </section>
   );
 }

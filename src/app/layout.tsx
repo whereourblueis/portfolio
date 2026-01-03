@@ -16,25 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "이수현 | 프론트엔드 개발자 포트폴리오",
-  description:
-    "사용자 경험을 최우선으로 생각하는 프론트엔드 개발자 이수현의 포트폴리오입니다.",
-  keywords: [
-    "프론트엔드",
-    "개발자",
-    "React",
-    "Next.js",
-    "TypeScript",
-    "포트폴리오",
-  ],
-  authors: [{ name: "이수현" }],
-  openGraph: {
-    title: "이수현 | 프론트엔드 개발자 포트폴리오",
-    description:
-      "사용자 경험을 최우선으로 생각하는 프론트엔드 개발자 이수현의 포트폴리오입니다.",
-    type: "website",
-    locale: "ko_KR",
-  },
+  title: "이수현 - 프론트엔드 개발자",
+  description: "프론트엔드 개발자 이수현입니다.",
 };
 
 export default function RootLayout({
