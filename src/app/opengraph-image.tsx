@@ -1,7 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-
 export const alt = "이수현 - 프론트엔드 개발자 포트폴리오";
 export const size = {
   width: 1200,
