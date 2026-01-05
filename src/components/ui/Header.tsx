@@ -7,7 +7,7 @@ import { navLinks } from "@/data/portfolio";
 function Logo() {
   return (
     <svg viewBox="0 0 100 100" className="w-14 h-14">
-      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="currentColor" fontFamily="sans-serif" fontWeight="bold" fontSize="32">{"<SH/>"}</text>
+      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="currentColor" fontFamily="sans-serif" fontWeight="bold" fontSize="32">{"SH"}</text>
     </svg>
   );
 }

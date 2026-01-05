@@ -20,30 +20,37 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+          background: "linear-gradient(135deg, #ede9fe 0%, #dbeafe 50%, #e0e7ff 100%)",
         }}
       >
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 120,
-            fontWeight: "bold",
-            color: "white",
-            marginBottom: 20,
           }}
         >
-          {"<SH/>"}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 36,
-            color: "rgba(255, 255, 255, 0.9)",
-          }}
-        >
-          Frontend Developer Portfolio
+          <div
+            style={{
+              fontSize: 72,
+              fontWeight: "bold",
+              color: "#1f2937",
+              letterSpacing: "0.15em",
+            }}
+          >
+            LEE SU HYUN
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              color: "#6b7280",
+              marginTop: 16,
+              letterSpacing: "0.1em",
+            }}
+          >
+            Frontend Developer Portfolio
+          </div>
         </div>
       </div>
     ),
