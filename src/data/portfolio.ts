@@ -2,7 +2,7 @@ export const personalInfo = {
   name: "Lee Su Hyun",
   title: "신입 프론트엔드 개발자",
   email: "esuhyun0416@gmail.com",
-  github: "https://github.com/LeeSuHyun0",
+  github: "https://github.com/whereourblueis",
   description: "사용자의 시선이 머무는 디테일에 집중합니다.\nAI 챗봇부터 관리자 대시보드까지 70여 개의 화면을 직접 구축하며,\n최적의 사용자 경험을 설계하는 신입 프론트엔드 개발자 이수현입니다.",
 };
 
@@ -51,7 +51,7 @@ export const projects = [
       },
       team: "4명",
       period: "2025.11.13 ~ 12.19",
-      githubUrl: "https://github.com/team-gbbd/DreamPath.git",
+      githubUrl: "https://github.com/whereourblueis/DreamPath.git",
       details: [
         {
           title: "서비스 전체 프론트엔드 통합",
@@ -87,7 +87,7 @@ export const projects = [
     },
     team: "5명",
     period: "2025.10.27 ~ 11.10",
-    githubUrl: "https://github.com/team-gbbd/ddbb.git",
+    githubUrl: "https://github.com/whereourblueis/ddbb.git",
     details: [
       {
         title: "POS 서비스 전체 프론트엔드 개발",
@@ -124,7 +124,7 @@ export const projects = [
       },
       team: "5명",
       period: "2025.08.11 ~ 09.30",
-      githubUrl: "https://github.com/mic-project/mic-project.git",
+      githubUrl: "https://github.com/whereourblueis/CareerFit.git",
       details: [
         {
           title: "전체 프론트엔드 아키텍처 설계",
@@ -175,7 +175,7 @@ export const projects = [
     },
     team: "5명",
     period: "2025.06.19 ~ 07.28",
-    githubUrl: "https://github.com/mic-project/hospitalreservation.git",
+    githubUrl: "https://github.com/whereourblueis/DocQ.git",
     details: [
       {
         title: "전체 프론트엔드 개발",
